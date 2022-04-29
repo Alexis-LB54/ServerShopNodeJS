@@ -14,14 +14,6 @@ const db = mysql.createConnection({
 
 });
 
-db.connect(function (err) {
-    if (err) throw err;
-    console.log("Connecté à la base de données MySQL!");
-    db.query("CREATE TABLE IF NOT EXISTS articles(id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, description TEXT, price INT, currency varchar(255) DEFAULT '€', brand VARCHAR(255))", function (err, result) {
-        if (err) throw err;
-        console.log("table créer créée !");
-    });
-});
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -35,7 +27,7 @@ app.post("/articles", (req, res) => {
     const id = Number(req.body.id)
     const title = req.body.title
     const price = req.body.price
-
+    
     let articleFound = {}
     inventory.articles.forEach((article) => {
         if (article.id === id) {
@@ -49,9 +41,25 @@ app.post("/articles", (req, res) => {
     console.log("test 3", articleFound);
 })
 
-app.post("/mybdd", (req, res) => {
+db.connect(function (err) {
+    if (err) throw err;
+    console.log("Connecté à la base de données MySQL!");
+    db.query("CREATE TABLE IF NOT EXISTS articles(id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, description TEXT, price INT, currency varchar(255) DEFAULT '€', brand VARCHAR(255))", function (err, result) {
+        if (err) throw err;
+        console.log("table créée ou déjà créée mais connécté quoi qu'il arrive !");
+    });
+});
+
+app.get("/mybdd", (req, res) => {
     inventory.articles.forEach((article) => {
-    })
+        var insert = `INSERT INTO articles (title, description, price, currency, brand) VALUES('${article.title}', '${article.description}', '${article.price}', '${article.currency}', '${article.brand}')`;
+        console.log("mon insert en bdd", insert);
+        db.query(insert, function (err, results) {
+            if (err) throw err;
+            
+            console.log("Elements ajoutés " + article.id);
+        });
+      }); 
 })
 
 app.listen(port, () => {

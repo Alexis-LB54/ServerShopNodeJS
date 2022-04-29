@@ -2,8 +2,8 @@
     "articles": [
         {
             "id": 1,
-            "title": "Canard à l'Orange",
-            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga adipisci exercitationem ad qui vero sunt, placeat, maiores voluptatibus at provident totam vel optio. Minus illo ullam unde numquam deserunt dolore?",
+            "title": "Canard à l Orange",
+            "description": "C est très bon",
             "price": 60,
             "currency": "€",
             "brand": "Friskies"
@@ -11,7 +11,7 @@
         {
             "id": 2,
             "title": "Cocotte de lotte rôtie, jus aux cèpes, pleurotes, épinards et ravioles de Royan",
-            "description": "int commodi totam quaerat rem earum tempore odit beatae, ipsam error! Placeat consectetur possimus ab.",
+            "description": "C est très bon",
             "price": 60,
             "currency": "€",
             "brand": "Wiskas"
@@ -19,7 +19,7 @@
         {
             "id": 3,
             "title": "Pizza à la créme au truffes avec sa persillade",
-            "description": "ro sunt, placeat, maiores voluptatibus at provident totam vel optio. Minus illo ullam unde numquam deserunt dolore?",
+            "description": "C est très bon",
             "price": 84,
             "currency": "€",
             "brand": "Friskies"
@@ -27,7 +27,7 @@
         {
             "id": 4,
             "title": "Avocat",
-            "description": "g elit. Nulla natus quidem praesentium quae modi voluptate totam numquam quibusdam dolores incidunt vero velit est autem, eaque, rem dignissimos unde, libero laudantium.",
+            "description": "C est très bon",
             "price": 9,
             "currency": "€",
             "brand": "Wiskas"
@@ -35,7 +35,7 @@
         {
             "id": 5,
             "title": "Salade avec Avocat, Tomates et Mozzarella",
-            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga adipisci exercitationem ad qui vero sunt, placeat, maiores voluptatibus at provident totam vel optio. Minus illo ullam unde numquam deserunt dolore?",
+            "description": "C est très bon",
             "price": 75,
             "currency": "€",
             "brand": "Friskies"
@@ -43,7 +43,7 @@
         {
             "id": 6,
             "title": "Baguette de pain",
-            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga adipisci exercitationem ad qui vero sunt, placeat, maiores voluptatibus at provident totam vel optio. Minus illo ullam unde numquam deserunt dolore?",
+            "description": "C est très bon",
             "price": 1.4,
             "currency": "€",
             "brand": "Friskies"
@@ -51,7 +51,7 @@
         {
             "id": 7,
             "title": "Bouteille de vin rouge de Gironde",
-            "description": "iat minus sapiente quod et? In consectetur provident consequatur laudantium quas soluta aliquid asperiores",
+            "description": "C est très bon",
             "price": 23,
             "currency": "€",
             "brand": "Wiskas"
@@ -59,7 +59,7 @@
         {
             "id": 8,
             "title": "Entrée au Saumon fumée",
-            "description": "amet consectetur adipisicing elit. Animi vel dolor delectus a quas porro provident optio aliquid nam rep",
+            "description": "C est très bon",
             "price": 13,
             "currency": "€",
             "brand": "Wiskas"
@@ -67,7 +67,7 @@
         {
             "id": 9,
             "title": "Oigons caramélisés",
-            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga adipisci exercitationem ad qui vero sunt, placeat, maiores voluptatibus at provident totam vel optio. Minus illo ullam unde numquam deserunt dolore?",
+            "description": "C est très bon",
             "price": 2.3,
             "currency": "€",
             "brand": "Friskies"
@@ -75,7 +75,7 @@
         {
             "id": 10,
             "title": "Escargot, la douzaine",
-            "description": "elit. Impedit maiores fugit, optio officia quasi nam. Magni, maxime eveniet earum du",
+            "description": "C est très bon",
             "price": 23,
             "currency": "€",
             "brand": "Friskies"
@@ -83,7 +83,7 @@
         {
             "id": 11,
             "title": "Steak tartare avec ses frites maisons",
-            "description": "dolor harum iste culpa placeat ducimus l",
+            "description": "C est très bon",
             "price": 32,
             "currency": "€",
             "brand": "Crunch"
@@ -91,7 +91,7 @@
         {
             "id": 12,
             "title": "Canard au sang ou à la Rouenaise",
-            "description": "consectetur adipisicing elit. Reiciendis nostrum velit ab quae? Saepe deleniti accusantiu",
+            "description": "C est très bon",
             "price": 66,
             "currency": "€",
             "brand": "Friskies"
@@ -99,15 +99,15 @@
         {
             "id": 13,
             "title": "Foie Gras de Canard du Sud-Ouest",
-            "description": "ium consequatur dolorum reprehenderit dicta at voluptas quidem blanditiis neque distinctio saepe voluptatem quae moll",
+            "description": "C est très bon",
             "price": 98,
             "currency": "€",
             "brand": "Friskies"
         },
         {
             "id": 14,
-            "title": "Croquette fourées au foie-gras d'Oie pour chat",
-            "description": "lor sit amet consectetur adipisicing elit. Velit ",
+            "title": "Croquette fourées au foie-gras d Oie pour chat",
+            "description": "C est très bon",
             "price": 54,
             "currency": "€",
             "brand": "Wiskas"
@@ -115,7 +115,7 @@
         {
             "id": 15,
             "title": "Blanquette de Veau",
-            "description": "pore architecto voluptate omnis ",
+            "description": "C est très bon",
             "price": 42,
             "currency": "€",
             "brand": "Friskies"
