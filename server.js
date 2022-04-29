@@ -5,7 +5,9 @@ var cors = require('cors')
 var bodyParser = require('body-parser');
 var app = express()
 const port = "96"
+
 const mysql = require('mysql');
+
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -61,6 +63,8 @@ app.get("/mybdd", (req, res) => {
         });
       }); 
 })
+
+
 
 app.listen(port, () => {
     console.log("coucou le server tourne" + port);
