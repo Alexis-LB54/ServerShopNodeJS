@@ -27,9 +27,7 @@ app.post("/articles", (req, res) => {
             articleFound = article
         }
     })
-    console.log("test 1", articleFound);
     fs.writeFileSync("./inventory.json", JSON.stringify(inventory))
-    console.log("test 2", articleFound);
     res.json(articleFound);
     console.log("test 3", articleFound);
 })
