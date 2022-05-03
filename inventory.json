@@ -111,14 +111,6 @@
             "price": 54,
             "currency": "€",
             "brand": "Wiskas"
-        },
-        {
-            "id": 15,
-            "title": "Blanquette de Veau",
-            "description": "C est très bon",
-            "price": 42,
-            "currency": "€",
-            "brand": "Friskies"
         }
     ]
 }

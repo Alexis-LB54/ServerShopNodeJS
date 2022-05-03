@@ -98,7 +98,22 @@ app.get("/myuser", (req, res) => {
     });
 })
 
+ //pour supprimer un élément
+ app.delete("/delete/:id", (req, res) => {
+    const id = req.params.id
+    console.log("mon id d'article à supprimer:", id)
+    let articleFound = {}
 
+    const findId = (article) => article.id == id;
+
+    let MyIndex = inventory.articles.findIndex(findId);
+    console.log(MyIndex);
+
+    inventory.articles.splice(MyIndex, 1);
+
+    fs.writeFileSync("./inventory.json", JSON.stringify(inventory))
+    res.json(articleFound);
+})
 
 app.listen(port, () => {
     console.log("coucou le server tourne" + port);
