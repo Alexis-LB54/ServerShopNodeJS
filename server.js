@@ -5,11 +5,8 @@ var cors = require('cors')
 var bodyParser = require('body-parser');
 var app = express()
 const port = "96"
-var data = fs.readFileSync("inventory.json");
-var myObject = JSON.parse(data);
-
 const mysql = require('mysql');
-const { title } = require("process");
+const csvtojson = require('csvtojson');
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -65,15 +62,15 @@ db.connect(function (err) {
     console.log("Connecté à la base de données MySQL!");
     db.query("CREATE TABLE IF NOT EXISTS articles(id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, description TEXT, price INT, currency varchar(255) DEFAULT '€', brand VARCHAR(255))", function (err, result) {
         if (err) throw err;
-        console.log("table créée ou déjà créée mais connécté quoi qu'il arrive !");
+        console.log("table articles créée ou déjà créée mais connécté quoi qu'il arrive !");
     });
     db.query("CREATE TABLE IF NOT EXISTS informations(id INT AUTO_INCREMENT PRIMARY KEY, compagnie_name VARCHAR(255) NOT NULL, number_of_employees INT, turnover INT)", function (err, result) {
         if (err) throw err;
-        console.log("table créée ou déjà créée mais connécté quoi qu'il arrive !");
+        console.log("table informations créée ou déjà créée mais connécté quoi qu'il arrive !");
     });
     db.query("CREATE TABLE IF NOT EXISTS accounts(id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL)", function (err, result) {
         if (err) throw err;
-        console.log("table créée ou déjà créée mais connécté quoi qu'il arrive !");
+        console.log("table accounts créée ou déjà créée mais connécté quoi qu'il arrive !");
     });
 
 });
@@ -114,6 +111,36 @@ app.get("/myuser", (req, res) => {
     fs.writeFileSync("./inventory.json", JSON.stringify(inventory))
     res.json(articleFound);
 })
+
+// CSV file name
+const fileName = "tableau.csv";
+  
+csvtojson().fromFile(fileName).then(source => {
+  
+    // Fetching the data from each row 
+    // and inserting to the table "tableau"
+    for (var i = 0; i < source.length; i++) {
+        var Name = source[i]["Nom"],
+            Employees = source[i]["Nombre de salarié"],
+            CA = source[i]["CA (Chiffre d’affaire) en €"]
+  
+        var insertStatement = `INSERT INTO informations(compagnie_name, number_of_employees, turnover) VALUES (?, ?, ?)`;
+        var items = [Name, Employees, CA];
+  
+        // Inserting data of current row
+        // into database
+        db.query(insertStatement, items, 
+            (err, results, fields) => {
+            if (err) {
+                console.log(
+    "Unable to insert item at row ", i + 1);
+                return console.log(err);
+            }
+        });
+    }
+    console.log(
+"All items stored into database successfully");
+});
 
 app.listen(port, () => {
     console.log("coucou le server tourne" + port);
