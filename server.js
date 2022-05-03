@@ -166,8 +166,7 @@ app.post("/auth", function(request, response) {
 				// Authenticate the user
 				request.session.loggedin = true;
 				request.session.username = username;
-				// Redirect to home page
-				response.redirect('/home');
+                console.log("user connecté");
 			} else {
 				response.send('Incorrect Username and/or Password!');
 			}			
