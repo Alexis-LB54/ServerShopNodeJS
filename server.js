@@ -7,6 +7,7 @@ var app = express()
 const port = "96"
 const mysql = require('mysql');
 const csvtojson = require('csvtojson');
+const session = require('express-session');
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -87,6 +88,55 @@ app.get("/mybdd", (req, res) => {
     });
 })
 
+//pour supprimer un élément
+app.delete("/delete/:id", (req, res) => {
+    const id = req.params.id
+    console.log("mon id d'article à supprimer:", id)
+    let articleFound = {}
+    
+    const findId = (article) => article.id == id;
+    
+    let MyIndex = inventory.articles.findIndex(findId);
+    console.log(MyIndex);
+
+    inventory.articles.splice(MyIndex, 1);
+    
+    fs.writeFileSync("./inventory.json", JSON.stringify(inventory))
+    res.json(articleFound);
+})
+
+// CSV file name
+const fileName = "tableau.csv";
+
+// csvtojson().fromFile(fileName).then(source => {
+    
+//     // Fetching the data from each row 
+//     // and inserting to the table "tableau"
+//     for (var i = 0; i < source.length; i++) {
+//         var Name = source[i]["Nom"],
+//         Employees = source[i]["Nombre de salarié"],
+//         CA = source[i]["CA (Chiffre d’affaire) en €"]
+  
+//         var insertStatement = `INSERT INTO informations(compagnie_name, number_of_employees, turnover) VALUES (?, ?, ?)`;
+//         var items = [Name, Employees, CA];
+  
+//         // Inserting data of current row
+//         // into database
+//         db.query(insertStatement, items, 
+//             (err, results, fields) => {
+//                 if (err) {
+//                 console.log(
+//                     "Unable to insert item at row ", i + 1);
+//                 return console.log(err);
+//             }
+//         });
+//     }
+//     console.log(
+// "All items stored into database successfully");
+// });
+
+
+// système de connection
 app.get("/myuser", (req, res) => {
     var insert2 = `INSERT INTO accounts (username, password, email) VALUES ('alexis', 'alexis', 'alexis@alexis.eu')`;
     db.query(insert2, function (err, results) {
@@ -95,52 +145,40 @@ app.get("/myuser", (req, res) => {
     });
 })
 
- //pour supprimer un élément
- app.delete("/delete/:id", (req, res) => {
-    const id = req.params.id
-    console.log("mon id d'article à supprimer:", id)
-    let articleFound = {}
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
 
-    const findId = (article) => article.id == id;
-
-    let MyIndex = inventory.articles.findIndex(findId);
-    console.log(MyIndex);
-
-    inventory.articles.splice(MyIndex, 1);
-
-    fs.writeFileSync("./inventory.json", JSON.stringify(inventory))
-    res.json(articleFound);
-})
-
-// CSV file name
-const fileName = "tableau.csv";
-  
-csvtojson().fromFile(fileName).then(source => {
-  
-    // Fetching the data from each row 
-    // and inserting to the table "tableau"
-    for (var i = 0; i < source.length; i++) {
-        var Name = source[i]["Nom"],
-            Employees = source[i]["Nombre de salarié"],
-            CA = source[i]["CA (Chiffre d’affaire) en €"]
-  
-        var insertStatement = `INSERT INTO informations(compagnie_name, number_of_employees, turnover) VALUES (?, ?, ?)`;
-        var items = [Name, Employees, CA];
-  
-        // Inserting data of current row
-        // into database
-        db.query(insertStatement, items, 
-            (err, results, fields) => {
-            if (err) {
-                console.log(
-    "Unable to insert item at row ", i + 1);
-                return console.log(err);
-            }
-        });
-    }
-    console.log(
-"All items stored into database successfully");
+app.post("/auth", function(request, response) {
+	// Capture the input fields
+	let username = request.body.username;
+	let password = request.body.password;
+	// Ensure the input fields exists and are not empty
+	if (username && password) {
+		// Execute SQL query that'll select the account from the database based on the specified username and password
+		db.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+			// If there is an issue with the query, output the error
+			if (error) throw error;
+			// If the account exists
+			if (results.length > 0) {
+				// Authenticate the user
+				request.session.loggedin = true;
+				request.session.username = username;
+				// Redirect to home page
+				response.redirect('/home');
+			} else {
+				response.send('Incorrect Username and/or Password!');
+			}			
+			response.end();
+		});
+	} else {
+		response.send('Please enter Username and Password!');
+		response.end();
+	}
 });
+
 
 app.listen(port, () => {
     console.log("coucou le server tourne" + port);
