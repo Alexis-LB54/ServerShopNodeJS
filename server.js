@@ -4,9 +4,12 @@ const fs = require('fs')
 var cors = require('cors')
 var bodyParser = require('body-parser');
 var app = express()
-const port = "98"
+const port = "96"
+var data = fs.readFileSync("inventory.json");
+var myObject = JSON.parse(data);
 
 const mysql = require('mysql');
+const { title } = require("process");
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -41,6 +44,20 @@ app.post("/articles", (req, res) => {
     fs.writeFileSync("./inventory.json", JSON.stringify(inventory))
     res.json(articleFound);
     console.log("test 3", articleFound);
+})
+
+app.post("/add", (req, res) => {
+    const article = {
+        id: Number((inventory.articles.length) + 1),
+        title: req.body.title,
+        description: req.body.description,
+        price: req.body.price,
+        currency: req.body.currency,
+        brand: req.body.brand,
+    }
+    inventory.articles.push(article)
+    fs.writeFileSync("./inventory.json", JSON.stringify(inventory))
+    res.json(article);
 })
 
 db.connect(function (err) {
