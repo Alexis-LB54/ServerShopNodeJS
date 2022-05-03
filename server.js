@@ -4,7 +4,7 @@ const fs = require('fs')
 var cors = require('cors')
 var bodyParser = require('body-parser');
 var app = express()
-const port = "96"
+const port = "98"
 
 const mysql = require('mysql');
 
@@ -29,7 +29,7 @@ app.post("/articles", (req, res) => {
     const id = Number(req.body.id)
     const title = req.body.title
     const price = req.body.price
-    
+
     let articleFound = {}
     inventory.articles.forEach((article) => {
         if (article.id === id) {
@@ -50,18 +50,35 @@ db.connect(function (err) {
         if (err) throw err;
         console.log("table créée ou déjà créée mais connécté quoi qu'il arrive !");
     });
+    db.query("CREATE TABLE IF NOT EXISTS informations(id INT AUTO_INCREMENT PRIMARY KEY, compagnie_name VARCHAR(255) NOT NULL, number_of_employees INT, turnover INT)", function (err, result) {
+        if (err) throw err;
+        console.log("table créée ou déjà créée mais connécté quoi qu'il arrive !");
+    });
+    db.query("CREATE TABLE IF NOT EXISTS accounts(id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL)", function (err, result) {
+        if (err) throw err;
+        console.log("table créée ou déjà créée mais connécté quoi qu'il arrive !");
+    });
+
 });
 
 app.get("/mybdd", (req, res) => {
     inventory.articles.forEach((article) => {
         var insert = `INSERT INTO articles (title, description, price, currency, brand) VALUES('${article.title}', '${article.description}', '${article.price}', '${article.currency}', '${article.brand}')`;
         console.log("mon insert en bdd", insert);
+        console.log("insert d'un user", insert2);
         db.query(insert, function (err, results) {
             if (err) throw err;
-            
             console.log("Elements ajoutés " + article.id);
         });
-      }); 
+    });
+})
+
+app.get("/myuser", (req, res) => {
+    var insert2 = `INSERT INTO accounts (username, password, email) VALUES ('alexis', 'alexis', 'alexis@alexis.eu')`;
+    db.query(insert2, function (err, results) {
+        if (err) throw err;
+        console.log("User ajouté");
+    });
 })
 
 
