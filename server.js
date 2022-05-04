@@ -209,7 +209,7 @@ app.get("/mail", (req, res) => {
             to: "alexis@lebail.eu", // list of receivers
             subject: "Hello ✔", // Subject line
             text: "Amélie n'a aucune utilité, je veux rentrer à la maison tout de suite", // plain text body
-            html: "<b>Hi all</b>", // html body
+            html: "<b>Au secrous ! Amélie est dengereuse ! C'est une mega giga folle-dingue !</b>", // html body
         });
 
         console.log("Message sent: %s", info.messageId);
