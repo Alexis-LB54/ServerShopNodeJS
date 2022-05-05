@@ -9,6 +9,10 @@ const mysql = require('mysql');
 const csvtojson = require('csvtojson');
 const session = require('express-session');
 const nodemailer = require("nodemailer");
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient();
+const bcrypt = require('bcrypt');
+
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -18,6 +22,45 @@ const db = mysql.createConnection({
 
 });
 
+// const saltRounds = 2;
+// const myPlaintextPassword = 'alexis';
+// const someOtherPlaintextPassword = 'not_bacon';
+
+
+
+// (async function () {
+//     var password = "toto"
+//     var user1 = {}
+//     bcrypt.hash(password, 2, async function (err, hash) {
+//         // Store hash in your password DB.
+//         user1 = await prisma.user.create({
+//             data: {
+//                 email: "tzta@toto.fr",
+//                 name: "Toto Le Bail",
+//                 password: hash,
+//                 role: "ADMIN",
+//             },
+//         })
+//     });
+
+//     const foundUser = prisma.user.findUnique({
+//         where : {
+//             email: "tutu@toto.fr"
+//         }
+//     })
+
+//     if (!foundUser) {
+//     console.warn("non trouvé");        
+//     }
+
+//     var isValid = false;
+//     bcrypt.compare(password, foundUser.password, function(err, result) {
+//         isValid = result;
+//         result && console.log("c'est trouvé");
+//     });
+
+//     console.log("voici user", user1);
+// })()
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
