@@ -19,14 +19,11 @@ const db = mysql.createConnection({
     user: "root",
     password: "",
     database: "listeDeCourse"
-
 });
 
 // const saltRounds = 2;
 // const myPlaintextPassword = 'alexis';
 // const someOtherPlaintextPassword = 'not_bacon';
-
-
 
 // (async function () {
 //     var password = "toto"
@@ -65,6 +62,25 @@ const db = mysql.createConnection({
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
+app.get("/login_check", (req, res) => {
+    var password = "alexis"
+    const foundUser = prisma.user.findUnique({
+        where: {
+            email: "alexis@alexis.eu"
+        }
+    })
+
+    if (!foundUser) {
+        console.warn("non trouvé");
+    }
+
+    var isValid = false;
+    bcrypt.compare(password, foundUser.password, function (err, result) {
+        isValid = result;
+        result && console.log("c'est trouvé");
+    });
+})
 
 app.get("/articles", (req, res) => {
     res.json(inventory)

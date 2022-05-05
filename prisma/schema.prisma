@@ -7,16 +7,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  USER
-  ADMIN
+model accounts {
+  id       Int    @id @default(autoincrement())
+  username String @db.VarChar(255)
+  password String @db.VarChar(255)
+  email    String @db.VarChar(255)
 }
 
-model User {
-  id   Int  @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
-  password  String?
-  role Role
+model articles {
+  id          Int     @id @default(autoincrement())
+  title       String  @db.VarChar(255)
+  description String? @db.Text
+  price       Int?
+  currency    String? @default("€") @db.VarChar(255)
+  brand       String? @db.VarChar(255)
+}
+
+model informations {
+  id                  Int    @id @default(autoincrement())
+  compagnie_name      String @db.VarChar(255)
+  number_of_employees Int?
+  turnover            Int?
 }
