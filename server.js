@@ -13,7 +13,6 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
 
-
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -63,23 +62,58 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-app.get("/login_check", (req, res) => {
-    var password = "alexis"
-    const foundUser = prisma.user.findUnique({
+app.post("/login_check", async (req, res) => {
+
+    var username = req.body.username
+    var password = req.body.password
+    const foundUser = await prisma.accounts.findMany({
         where: {
-            email: "alexis@alexis.eu"
+            username: username,
+            password: password
         }
     })
+
+    console.log("user a tester :", foundUser);
 
     if (!foundUser) {
         console.warn("non trouvé");
     }
+
+    console.log("user a vérifier :", foundUser);
 
     var isValid = false;
     bcrypt.compare(password, foundUser.password, function (err, result) {
         isValid = result;
         result && console.log("c'est trouvé");
     });
+
+    console.log("user trouvé :", foundUser);
+
+    res.send(foundUser)
+})
+
+app.post("/signup", async (req, res) => {
+
+    var username = req.body.username
+    var password = req.body.password
+    var email = req.body.email
+
+    console.log("email :", email, "username :", username, "password :", password);
+
+    var user1 = {}
+    bcrypt.hash(password, 2, async function (err, hash) {
+        // Store hash in your password DB.
+        user1 = await prisma.accounts.create({
+            data: {
+                email: email,
+                username: username,
+                password: hash
+            },
+        })
+    });
+
+
+    res.send("inscrit")
 })
 
 app.get("/articles", (req, res) => {
@@ -209,6 +243,7 @@ app.get("/myuser", (req, res) => {
         if (err) throw err;
         console.log("User ajouté");
     });
+    res.send("ajout User in account ok")
 })
 
 app.use(session({
