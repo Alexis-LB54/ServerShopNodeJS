@@ -80,13 +80,16 @@ app.post("/login_check", async (req, res) => {
         console.warn("non trouvé");
     }
 
-    console.log("user a vérifier :", foundUser);
+    console.log("user a vérifier :", foundUser, "mp dans la bdd :", JSON.stringify(foundUser[0]["password"]));
 
-    bcrypt.compare(password, foundUser.password, function (err, result) {
-        console.log("je suis dans bcrypt  ","password dans vue :", password, "password dans bd :", foundUser.password);
+    let user_password = foundUser[0]["password"]
+    bcrypt.compare(password, JSON.stringify(foundUser[0]["password"]), function (err, result) {
+        console.log("je suis dans bcrypt  ", "password dans vue :", password, "password dans bd :", JSON.stringify(foundUser[0]["password"]), "result :", result);
         if (result == true) {
             res.send("connécté")
-        } res.send("c'est pas les bon id")
+        }
+        res.send("c'est pas les bon id")
+
         // if (result == true) {
         //     res.status(300).json({
         //         token: jwt.sign(
@@ -102,6 +105,7 @@ app.post("/login_check", async (req, res) => {
         //         )
         //     })
         // } res.send("Erreur nous n'avons pas trouvé vos identifiants dans la base de données")
+
     });
 
 })
