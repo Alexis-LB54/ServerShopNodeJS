@@ -80,31 +80,33 @@ app.post("/login_check", async (req, res) => {
         console.warn("non trouvé");
     }
 
-    console.log("user a vérifier :", foundUser, "mp dans la bdd :", JSON.stringify(foundUser[0]["password"]));
+    console.log("user a vérifier :", foundUser, "mp dans la bdd :", JSON.stringify(foundUser[0]["password"]).replaceAll('"', ''));
 
-    let user_password = foundUser[0]["password"]
-    bcrypt.compare(password, JSON.stringify(foundUser[0]["password"]), function (err, result) {
-        console.log("je suis dans bcrypt  ", "password dans vue :", password, "password dans bd :", JSON.stringify(foundUser[0]["password"]), "result :", result);
-        if (result == true) {
-            res.send("connécté")
-        }
-        res.send("c'est pas les bon id")
-
+    bcrypt.compare(password, JSON.stringify(foundUser[0]["password"]).replaceAll('"', ''), function (err, result) {
+        console.log("je suis dans bcrypt  ", "password dans vue :", password, "password dans bd :", JSON.stringify(foundUser[0]["password"]).replaceAll('"', ''), "result :", result);
         // if (result == true) {
-        //     res.status(300).json({
-        //         token: jwt.sign(
-        //             {
-        //                 id: foundUser.id,
-        //                 email: foundUser.email,
-        //                 username: foundUser.email,
-        //             },
-        //             'RANDOM_TOKEN_SECRET',
-        //             {
-        //                 expiresIn: '24h',
-        //             }
-        //         )
-        //     })
-        // } res.send("Erreur nous n'avons pas trouvé vos identifiants dans la base de données")
+        //     res.send("connécté")
+        // } else {
+        //     res.send("c'est pas les bon id")
+        // }
+
+        if (result == true) {
+            res.status(300).json({
+                token: jwt.sign(
+                    {
+                        id: foundUser.id,
+                        email: foundUser.email,
+                        username: foundUser.email,
+                    },
+                    'RANDOM_TOKEN_SECRET',
+                    {
+                        expiresIn: '24h',
+                    }
+                )
+            })
+        } else {
+            res.send("Erreur nous n'avons pas trouvé vos identifiants dans la base de données")
+        }
 
     });
 
