@@ -13,6 +13,8 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
 
+const jwt = require('jsonwebtoken');
+
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -62,18 +64,17 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-app.post("/login_check", async (req, res) => {
 
+app.post("/login_check", async (req, res) => {
     var username = req.body.username
     var password = req.body.password
     const foundUser = await prisma.accounts.findMany({
         where: {
             username: username,
-            password: password
         }
     })
-
-    console.log("user a tester :", foundUser);
+    console.log("username :", username, "password :", password);
+    // console.log("user a tester :", foundUser);
 
     if (!foundUser) {
         console.warn("non trouvé");
@@ -81,15 +82,28 @@ app.post("/login_check", async (req, res) => {
 
     console.log("user a vérifier :", foundUser);
 
-    var isValid = false;
     bcrypt.compare(password, foundUser.password, function (err, result) {
-        isValid = result;
-        result && console.log("c'est trouvé");
+        console.log("je suis dans bcrypt  ","password dans vue :", password, "password dans bd :", foundUser.password);
+        if (result == true) {
+            res.send("connécté")
+        } res.send("c'est pas les bon id")
+        // if (result == true) {
+        //     res.status(300).json({
+        //         token: jwt.sign(
+        //             {
+        //                 id: foundUser.id,
+        //                 email: foundUser.email,
+        //                 username: foundUser.email,
+        //             },
+        //             'RANDOM_TOKEN_SECRET',
+        //             {
+        //                 expiresIn: '24h',
+        //             }
+        //         )
+        //     })
+        // } res.send("Erreur nous n'avons pas trouvé vos identifiants dans la base de données")
     });
 
-    console.log("user trouvé :", foundUser);
-
-    res.send(foundUser)
 })
 
 app.post("/signup", async (req, res) => {
