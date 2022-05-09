@@ -324,7 +324,7 @@ app.get("/mail", (req, res) => {
             from: '"Alexis LB" <alexis.lebail@laposte.net>', // sender address
             to: email, // list of receivers
             subject: `Hello ${username} ✔`, // Subject line
-            text: "Amélie n'a aucune utilité, je veux rentrer à la maison tout de suite", // plain text body
+            text: "Coucou ceci est un message codé", // plain text body
             html: "<b>Au secrous ! Amélie est dengereuse ! C'est une mega giga folle-dingue !</b>", // html body
         });
 
