@@ -12,8 +12,10 @@ const nodemailer = require("nodemailer");
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
+const imageToBase64 = require('image-to-base64');
 
 const jwt = require('jsonwebtoken');
+const { env } = require("process");
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -64,6 +66,22 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+
+app.post("/myphoto", (req, res) => {
+    let profilePhoto = req.body.file
+    imageToBase64(profilePhoto) // Path to the image
+        .then(
+            (response) => {
+                console.log(response); // "cGF0aC90by9maWxlLmpwZw=="
+            }
+        )
+        .catch(
+            (error) => {
+                console.log(error); // Logs an error if there was one
+            }
+        )
+    res.send("image enregistrée")
+})
 
 app.post("/login_check", async (req, res) => {
     var username = req.body.username
@@ -310,20 +328,20 @@ app.get("/mail", (req, res) => {
 
         // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
-            host: "smtp.ethereal.email",
-            port: 587,
+            host: "smtp.laposte.net",
+            port: 465,
             secure: false, // true for 465, false for other ports
             auth: {
-                user: testAccount.user, // generated ethereal user
-                pass: testAccount.pass, // generated ethereal password
+                user: "alexis.lebail@laposte.net", // generated ethereal user
+                pass: "JesuisAlexisLeBail96", // generated ethereal password
             },
         });
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
-            from: '"Alexis LB" <alexis.lebail@laposte.net>', // sender address
-            to: email, // list of receivers
-            subject: `Hello ${username} ✔`, // Subject line
+            from: 'alexis.lebail@laposte.net', // sender address
+            to: "alexis@lebail.eu", // list of receivers
+            subject: `Hello tutu ✔`, // Subject line
             text: "Coucou ceci est un message codé", // plain text body
             html: "<b>Au secrous ! Amélie est dengereuse ! C'est une mega giga folle-dingue !</b>", // html body
         });
@@ -340,7 +358,59 @@ app.get("/mail", (req, res) => {
     res.send("mail envoyé");
 })
 
+app.get("/mail22", (req, res) => {
+    let email = req.body.email;
+    let username = req.body.username;
 
+    // async..await is not allowed in global scope, must use a wrapper
+    async function main() {
+
+        try {
+            console.log("bjr");
+            // Generate test SMTP service account from ethereal.email
+            // Only needed if you don't have a real mail account for testing
+            let testAccount = await nodemailer.createTestAccount();
+
+            // create reusable transporter object using the default SMTP transport
+            let transporter = nodemailer.createTransport({
+                host: "smtp-pawolanmwen.alwaysdata.net",
+                port: 465,
+                secure: true, // true for 465, false for other ports
+                auth: {
+                    user: "alajitest1@pawolanmwen.com", // generated ethereal user
+                    pass: "rowfex-gUdxij-visto9", // generated ethereal password
+                },
+            });
+
+            console.log(email);
+            console.log(username);
+            // send mail with defined transport object
+            let info = await transporter.sendMail({
+                from: 'alajitest1@pawolanmwen.com', // sender address
+                to: email, // list of receivers
+                subject: `Bienvenue ${username}`, // Subject line
+                text: `Vous venez de vous inscrire en tant que ${username}`, // plain text body
+                html: "<b> Welcome on the TO DO SHOPPING LIST online</b>", // html body
+            });
+
+            console.log("JARRIIIVIE");
+
+            console.log("Message sent: %s", info.messageId);
+            // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+            // Preview only available when sending through an Ethereal account
+            console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+            // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+
+        } catch (error) {
+            console.log(error)
+
+        }
+    }
+
+    main().catch(console.error);
+    res.send("!!! mail envoyÃ©");
+})
 
 app.listen(port, () => {
     console.log("coucou le server tourne" + port);
