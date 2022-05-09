@@ -300,6 +300,8 @@ app.post("/auth", function (request, response) {
 });
 
 app.get("/mail", (req, res) => {
+    let email = req.body.email;
+    let username = req.body.username;
     // async..await is not allowed in global scope, must use a wrapper
     async function main() {
         // Generate test SMTP service account from ethereal.email
@@ -320,8 +322,8 @@ app.get("/mail", (req, res) => {
         // send mail with defined transport object
         let info = await transporter.sendMail({
             from: '"Alexis LB" <alexis.lebail@laposte.net>', // sender address
-            to: "alexis@lebail.eu", // list of receivers
-            subject: "Hello ✔", // Subject line
+            to: email, // list of receivers
+            subject: `Hello ${username} ✔`, // Subject line
             text: "Amélie n'a aucune utilité, je veux rentrer à la maison tout de suite", // plain text body
             html: "<b>Au secrous ! Amélie est dengereuse ! C'est une mega giga folle-dingue !</b>", // html body
         });
@@ -335,6 +337,7 @@ app.get("/mail", (req, res) => {
     }
 
     main().catch(console.error);
+    res.send("mail envoyé");
 })
 
 
