@@ -13,6 +13,7 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
 const imageToBase64 = require('image-to-base64');
+var formidable = require('formidable');
 
 const jwt = require('jsonwebtoken');
 const { env } = require("process");
@@ -216,7 +217,7 @@ app.get("/mybdd", (req, res) => {
     inventory.articles.forEach((article) => {
         var insert = `INSERT INTO articles (title, description, price, currency, brand) VALUES('${article.title}', '${article.description}', '${article.price}', '${article.currency}', '${article.brand}')`;
         console.log("mon insert en bdd", insert);
-        console.log("insert d'un user", insert2);
+        console.log("insert d'un user", insert);
         db.query(insert, function (err, results) {
             if (err) throw err;
             console.log("Elements ajoutés " + article.id);
