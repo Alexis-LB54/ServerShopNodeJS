@@ -2,9 +2,9 @@
     "articles": [
         {
             "id": 1,
-            "title": "Canard à l Orange Bleu",
+            "title": "Canard à l Orange, servi avec son riz",
             "description": "C est très bon",
-            "price": 60,
+            "price": 65,
             "currency": "€",
             "brand": "Friskies"
         },

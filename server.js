@@ -15,6 +15,9 @@ const bcrypt = require('bcrypt');
 const imageToBase64 = require('image-to-base64');
 var formidable = require('formidable');
 
+const multer  = require('multer');
+const upload = multer({ dest: 'uploads/' })
+
 const jwt = require('jsonwebtoken');
 const { env } = require("process");
 
@@ -66,6 +69,41 @@ const db = mysql.createConnection({
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
+app.post("/inscription", upload.single("image"), async (req, res) => {
+    const { email, password, username } = req.body;
+    const image = req.file.filename;
+    const existingUser = await prisma.accounts.findFirst({
+      where: {
+        email: email,
+      },
+    });
+    if (existingUser) {
+      return res.status(409).json({
+        error: "Existing user",
+        message: "This user is already registered",
+      });
+    }
+    // const token = jsonwebtoken.sign(
+    //   {
+    //     email,
+    //   },
+    //   process.env.TOKEN_KEY,
+    //   {
+    //     expiresIn: "2h",
+    //   }
+    // );
+    const response = await prisma.accounts.create({
+      data: {
+        email,
+        username,
+        password,
+        image
+      },
+    });
+    // mail(email, "New Account", "You created an account on CatFood Store.");
+    res.json({ response: response });
+  });
 
 
 app.post("/myphoto", (req, res) => {
