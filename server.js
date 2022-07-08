@@ -141,11 +141,6 @@ app.post("/login_check", async (req, res) => {
 
     bcrypt.compare(password, JSON.stringify(foundUser[0]["password"]).replaceAll('"', ''), function (err, result) {
         console.log("je suis dans bcrypt  ", "password dans vue :", password, "password dans bd :", JSON.stringify(foundUser[0]["password"]).replaceAll('"', ''), "result :", result);
-        // if (result == true) {
-        //     res.send("connécté")
-        // } else {
-        //     res.send("c'est pas les bon id")
-        // }
 
         if (result == true) {
             res.status(300).json({
